@@ -21,10 +21,10 @@ static std::string request_via_tcp(const std::string &request) {
     // Send the request
     send_all_tcp(sockfd, request);
 
-    // Disable communication on client socket to signal to main server that it is finished sending the request.
+    // Disable sending on client socket to signal to main server that it is finished sending the request.
     shutdown(sockfd, SHUT_WR);
 
-    // Receive the response from the server
+    // Wait and receive the response from the server
     std::string resp = recv_all_tcp(sockfd);
 
     // Close the socket after receiving the response
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     std::cout << "The client is up and running." << std::endl;
 
     if (argc == 2) {
-        // Construct the request string
+        // Construct the request string for balance checks
         std::string username = argv[1];
         std::string req = std::string("CHECK|") + username;
         std::cout << "\"" << username << "\" sent a balance enquiry request to the main server." << std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
         std::string resp = request_via_tcp(req);
         std::cout << resp;
     } else if (argc == 4) {
-        // Construct the transfer string
+        // Construct the request string for transfer requests
         std::string sender = argv[1];
         std::string receiver = argv[2];
         std::string amount = argv[3];
