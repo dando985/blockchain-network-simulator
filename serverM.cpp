@@ -92,7 +92,7 @@ static bool append_transaction_to_backend(int udp_sock, int port, const std::str
 }
 
 
-// Handles a CHECK request by computing the balance for the specified username
+// Handles a CHECK request by computing the balance for the specified username across all backend TX records
 static std::string handle_check(int udp_sock, const std::string &username) {
     auto all = collect_all_records(udp_sock, true);
 
@@ -246,9 +246,9 @@ int main() {
                 std::cout << "The main server sent the current balance to the client." << std::endl;
             } else if (req.rfind("TX|", 0) == 0) {
 
-                // Determine length of sender's username
+                // Find position of second separator (|)
                 size_t p1 = req.find('|', 3);
-                // Determine length of receiver's username
+                // Find position of third separator (|)
                 size_t p2 = req.find('|', p1 == std::string::npos ? p1 : p1 + 1);
 
                 if (p1 != std::string::npos && p2 != std::string::npos) {
