@@ -168,7 +168,7 @@ inline bool parse_record_line(const std::string &line, TxRecord &rec) {
     return true;
 }
 
-// Helper function to read all transaction records from a block file and return a vector of TxRecord structures
+// Helper function to read all transaction records from a block file, decrypting them and returning a vector of TxRecord structures
 inline std::vector<TxRecord> parse_records_text(const std::string &text) {
     std::vector<TxRecord> records;
     std::istringstream iss(text);
