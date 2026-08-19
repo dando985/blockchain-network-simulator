@@ -208,7 +208,7 @@ inline std::string record_to_line(const TxRecord &rec) {
 }
 
 
-// Converts a vector of TxRecord structures into pne single text block. Optionally able to encrypt the fields of the TxRecord structures before converting them to text. This is used when saving records to a block file.
+// Converts a vector of TxRecord structures into one single text block. Optionally able to encrypt the fields of the TxRecord structures before converting them to text. This is used when saving records to a block file.
 inline std::string records_to_text(const std::vector<TxRecord> &records, bool encrypt_fields) {
     std::ostringstream oss;
 
@@ -269,6 +269,8 @@ inline void save_records_to_file(const std::string &path, const std::vector<TxRe
     }
 }
 
+// -------------------------------- Computation Utilities --------------------------------
+
 // Creates a unique set of all users
 inline std::set<std::string> participant_set(const std::vector<TxRecord> &records) {
     std::set<std::string> out;
@@ -307,6 +309,8 @@ inline int max_serial(const std::vector<TxRecord> &records) {
     }
     return m;
 }
+
+// -------------------------------- User Request Handlers --------------------------------
 
 // Handles CHECK request by collecting all transaction records and computing the balance for the requested user
 inline std::string build_response_for_check(const std::vector<TxRecord> &all_records, const std::string &username) {
@@ -396,6 +400,8 @@ inline std::string build_response_for_tx(const std::vector<TxRecord> &all_record
     oss << "The current balance of \"" << sender << "\" is : " << format_amount(sender_balance_after) << " txcoins.\n";
     return oss.str();
 }
+
+// -------------------------------- TCP Networking Utilities --------------------------------
 
 // Creates a TCP server socket, binds it to the specified port, and starts listening for incoming connections
 inline int open_tcp_server_socket(int port) {
@@ -532,6 +538,8 @@ inline std::vector<std::string> split_lines(const std::string &text) {
 
     return lines;
 }
+
+// -------------------------------- UDP Networking Utilities --------------------------------
 
 // Helper to create a mini packet with format: type|seq|total|payload. This is used to send large payloads in smaller chunks over UDP.
 inline std::string chunk_packet(const std::string &type, int seq, int total, const std::string &payload) {
