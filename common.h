@@ -39,6 +39,8 @@ struct TxRecord {
     std::string amount;
 };
 
+// -------------------------------- Encryption and Decryption Utilities --------------------------------
+
 // Trim whitespace from both ends of a string
 inline std::string trim(const std::string &s) {
     // Find the first non-whitespace character
@@ -110,6 +112,8 @@ inline std::string decrypt_text(const std::string &text) {
     return letter_shift(text, -3);
 }
 
+// -------------------------------- Transaction Record Utilities --------------------------------
+
 // Converts a double value to a string representation, removing unnecessary trailing zeros and decimal points. Needed to have the amount as a string in the block files
 inline std::string format_amount(double value) {
 
@@ -151,7 +155,7 @@ inline bool parse_amount(const std::string &s, double &out) {
     }
 }
 
-// Convert block file record line to TxRecord structure. Input line must follow the format: serial sender receiver amount. Returns true if successful, false otherwise.
+// Convert block file record line to TxRecord structure. Input line must follow the format: serial sender receiver amount. Stores the record in the output parameter and returns true if successful, false otherwise.
 inline bool parse_record_line(const std::string &line, TxRecord &rec) {
     // Treat the line as an input stream and extract the fields into the TxRecord structure
     std::istringstream iss(line);
@@ -162,16 +166,6 @@ inline bool parse_record_line(const std::string &line, TxRecord &rec) {
     }
 
     return true;
-}
-
-// Convert TxRecord structure to a string for block file storage
-inline std::string record_to_line(const TxRecord &rec) {
-    std::ostringstream oss;
-
-    // Format the TxRecord fields into a single line string, separating them with spaces. This is used when saving records to a block file.
-    oss << rec.serial << ' ' << rec.sender << ' ' << rec.receiver << ' ' << rec.amount;
-
-    return oss.str();
 }
 
 // Helper function to read all transaction records from a block file and return a vector of TxRecord structures
@@ -201,6 +195,16 @@ inline std::vector<TxRecord> parse_records_text(const std::string &text) {
     }
 
     return records;
+}
+
+// Convert TxRecord structure to a record string for block file storage. Note that the record string is not encrypted here; encryption is handled in the records_to_text function when saving records to a block file.
+inline std::string record_to_line(const TxRecord &rec) {
+    std::ostringstream oss;
+
+    // Format the TxRecord fields into a single line string, separating them with spaces. This is used when saving records to a block file.
+    oss << rec.serial << ' ' << rec.sender << ' ' << rec.receiver << ' ' << rec.amount;
+
+    return oss.str();
 }
 
 
