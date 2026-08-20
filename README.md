@@ -510,7 +510,7 @@ Once all servers are running, client requests can be made.
 Run the Monitor to request the sorted transaction ledger:
 
 ```bash
-./monitor
+./monitor TXLIST
 ```
 
 The resulting transaction history is written to:
