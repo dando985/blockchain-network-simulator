@@ -88,6 +88,7 @@ static bool append_transaction_to_backend(int udp_sock, int port, const std::str
                   << " using UDP over port " << port << "." << std::endl;
     }
 
+    // Check that the backend server's response is "OK"
     return resp.find("OK") != std::string::npos;
 }
 
@@ -105,6 +106,7 @@ static std::string handle_tx(int udp_sock, const std::string &sender, const std:
     bool success = false;
     double sender_after = 0.0;
     std::string reason;
+    // Validate transaction details and confirm whether the transaction can be made successfully
     std::string response = build_response_for_tx(all, sender, receiver, amount_text, success, sender_after, reason);
 
     // Return failure message if transaction request fails
@@ -259,7 +261,7 @@ int main() {
                     std::cout << "The main server received from \"" << sender << "\" to transfer " << amount
                               << " coins to \"" << receiver << "\" using TCP over port " << peer_port << "." << std::endl;
 
-                    // Create a string that checks usernames and sender balance from backend servers
+                    // Create a string that checks usernames and sender balance from backend servers, and appends new transaction line to backend server
                     std::string resp = handle_tx(udp_sock, sender, receiver, amount);
 
                     // Send response back to client

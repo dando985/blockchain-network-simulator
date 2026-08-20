@@ -29,12 +29,14 @@ static void append_block_line(const std::string &line) {
 
 // Main function to set up the UDP server and handle incoming requests from the main server
 int main() {
+    // Initialize the UDP socket
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) { 
         perror("socket"); 
         exit(1); 
     }
 
+    // Construct server C's IP address structure
     sockaddr_in servaddr{};
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr(TXCHAIN_HOST);
@@ -49,15 +51,24 @@ int main() {
     std::cout << "The ServerC is up and running using UDP on port " << BACKEND_PORT << "." << std::endl;
 
     while (true) {
+        // Create receive buffer for incomming UDP datagram
         char buf[4096];
+
+        // Store information about the sender to know where to send the response back to
         sockaddr_in cliaddr{};
         socklen_t len = sizeof(cliaddr);
+
+        // Receive UDP data and store the sender's address
         ssize_t n = recvfrom(sockfd, buf, sizeof(buf), 0, reinterpret_cast<sockaddr*>(&cliaddr), &len);
+
+        // Error handling
         if (n < 0) {
             if (errno == EINTR) continue;
             perror("recvfrom");
             continue;
         }
+
+        // Convert the byte data into the request string
         std::string req(buf, buf + n);
         std::cout << "The ServerC received a request from the Main Server." << std::endl;
 

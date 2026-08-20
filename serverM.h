@@ -11,7 +11,7 @@ static const int SERVERM_BACKEND_A_PORT = 21407;
 static const int SERVERM_BACKEND_B_PORT = 22407;
 static const int SERVERM_BACKEND_C_PORT = 23407;
 
-// Main server's TCP ports to listen for client and monitor
+// Main server's TCP ports
 static const int SERVERM_CLIENT_TCP_PORT = 25407;
 static const int SERVERM_MONITOR_TCP_PORT = 26407;
 

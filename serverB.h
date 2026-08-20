@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-// UDP port for the main server to connect to this backend server
+// Server B's UDP port to listen on
 static const int SERVERB_UDP_PORT = 22407;
 
 // Block file to store transaction records for this backend server
